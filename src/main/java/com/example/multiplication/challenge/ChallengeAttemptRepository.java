@@ -1,7 +1,6 @@
 package com.example.multiplication.challenge;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +9,11 @@ public interface ChallengeAttemptRepository extends CrudRepository<ChallengeAtte
   /*
    * @return the last 10 attempts for a given user, identified by their alias.
    * */
-  //  List<ChallengeAttempt> findTop10ByUserAliasOrderByIdDesc(String userAlias);
+  List<ChallengeAttempt> findTop10ByUserAliasOrderByIdDesc(String userAlias);
+
+  /**
+   * @return the last attempts for a given user, identified by their alias.
+   */
   @Query("SELECT a FROM ChallengeAttempt a WHERE a.user.alias = :userAlias ORDER BY a.id DESC")
   List<ChallengeAttempt> lastAttempts(@Param("userAlias") String userAlias);
 }
