@@ -1,20 +1,22 @@
 package com.example.multiplication.challenge;
 
+import com.example.multiplication.user.User;
+import jakarta.persistence.*;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
-@Getter
-@ToString
-@EqualsAndHashCode
+@Entity
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChallengeAttempt {
-    private Long id;
-    private Long userId;
-    private int factorA;
-    private int FactorB;
-    private int resultAttempt;
-    private boolean correct;
+  @Id @GeneratedValue private Long id;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "USER_ID")
+  private User users;
+
+  private int factorA;
+  private int factorB;
+  private int guess;
+  private boolean correct;
 }

@@ -1,19 +1,23 @@
 package com.example.multiplication.user;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.*;
 
 /*
  * Stores information to identify the user.
  * */
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Entity
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
-    private Long id;
-    private String alias;
+  @Id @GeneratedValue private Long id;
+  private String alias;
+
+  public User(final String userAlias) {
+    this(null, userAlias);
+  }
 }
