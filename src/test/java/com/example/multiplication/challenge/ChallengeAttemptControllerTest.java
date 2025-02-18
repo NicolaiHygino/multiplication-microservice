@@ -3,9 +3,11 @@ package com.example.multiplication.challenge;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.example.multiplication.user.User;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class ChallengeAttemptControllerTest {
   @Autowired private JacksonTester<ChallengeAttemptDTO> jsonRequestAttempt;
 
   @Autowired private JacksonTester<ChallengeAttempt> jsonResultAttempt;
+
+  @Autowired private JacksonTester<List<ChallengeAttempt>> jsonResultAttemptList;
 
   @Test
   void postValidResult() throws Exception {
@@ -70,5 +74,28 @@ public class ChallengeAttemptControllerTest {
 
     // then
     then(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+  }
+
+  @Test
+  void getLastAttempts() throws Exception {
+    // given
+    User user = new User(1L, "nicolai");
+    ChallengeAttempt attempt1 = new ChallengeAttempt(1L, user, 50, 60, 3000, true);
+    ChallengeAttempt attempt2 = new ChallengeAttempt(2L, user, 30, 40, 12000, false);
+    List<ChallengeAttempt> expectedAttempts = List.of(attempt1, attempt2);
+
+    given(challengeService.lastAttempts("nicolai")).willReturn(expectedAttempts);
+
+    // when
+    MockHttpServletResponse response =
+        mvc.perform(
+                get("/attempts").param("alias", "nicolai").contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
+
+    // then
+    then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    then(response.getContentAsString())
+        .isEqualTo(jsonResultAttemptList.write(expectedAttempts).getJson());
   }
 }

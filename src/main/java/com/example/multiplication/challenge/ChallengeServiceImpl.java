@@ -2,6 +2,7 @@ package com.example.multiplication.challenge;
 
 import com.example.multiplication.user.User;
 import com.example.multiplication.user.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,10 @@ public class ChallengeServiceImpl implements ChallengeService {
             isCorrect);
     // Stores  the attempt
     return attemptRepository.save(checkedAttempt);
+  }
+
+  @Override
+  public List<ChallengeAttempt> lastAttempts(String userAlias) {
+    return attemptRepository.lastAttempts(userAlias);
   }
 }
