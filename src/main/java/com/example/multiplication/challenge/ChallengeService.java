@@ -12,4 +12,6 @@ public interface ChallengeService {
   ChallengeAttempt verifyAttempt(ChallengeAttemptDTO resultAttempt);
 
   List<ChallengeAttempt> lastAttempts(String userAlias);
+
+  List<ChallengeAttempt> getStatsForUser(String userAlias);
 }

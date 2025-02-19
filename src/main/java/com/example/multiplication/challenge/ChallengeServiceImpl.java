@@ -46,4 +46,9 @@ public class ChallengeServiceImpl implements ChallengeService {
   public List<ChallengeAttempt> lastAttempts(String userAlias) {
     return attemptRepository.lastAttempts(userAlias);
   }
+
+  @Override
+  public List<ChallengeAttempt> getStatsForUser(final String userAlias) {
+    return attemptRepository.findTop10ByUserAliasOrderByIdDesc(userAlias);
+  }
 }
