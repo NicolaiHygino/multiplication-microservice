@@ -1,6 +1,5 @@
 package com.example.multiplication.challenge;
 
-import com.example.multiplication.serviceclients.GamificationServiceClient;
 import com.example.multiplication.user.User;
 import com.example.multiplication.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,13 +27,13 @@ public class ChallengeServiceTest {
     @Mock
     private ChallengeAttemptRepository challengeAttemptRepository;
     @Mock
-    private GamificationServiceClient gamificationServiceClient;
+    private ChallengeEventPub challengeEventPub;
 
     @BeforeEach
     public void setUp() {
 
         challengeService = new ChallengeServiceImpl(userRepository, challengeAttemptRepository,
-                gamificationServiceClient);
+                challengeEventPub);
     }
 
     private void mockSaveChallengeAttempt() {
@@ -53,7 +52,7 @@ public class ChallengeServiceTest {
         then(resultAttempt.isCorrect()).isTrue();
         verify(userRepository).save(new User("nicolai"));
         verify(challengeAttemptRepository).save(resultAttempt);
-        verify(gamificationServiceClient).sentAttempt(resultAttempt);
+        verify(challengeEventPub).challengeSolved(resultAttempt);
     }
 
     @Test

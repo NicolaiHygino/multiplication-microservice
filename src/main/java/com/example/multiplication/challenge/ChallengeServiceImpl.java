@@ -1,6 +1,5 @@
 package com.example.multiplication.challenge;
 
-import com.example.multiplication.serviceclients.GamificationServiceClient;
 import com.example.multiplication.user.User;
 import com.example.multiplication.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.List;
 public class ChallengeServiceImpl implements ChallengeService {
     private final UserRepository userRepository;
     private final ChallengeAttemptRepository attemptRepository;
-    private final GamificationServiceClient gameClient;
+    private final ChallengeEventPub challengeEventPub;
 
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
@@ -32,8 +31,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         ChallengeAttempt checkedAttempt = new ChallengeAttempt(null, user, attemptDTO.getFactorA(), attemptDTO.getFactorB(), attemptDTO.getGuess(), isCorrect);
         // Stores  the attempt
         ChallengeAttempt storedAttempt = attemptRepository.save(checkedAttempt);
-        boolean status = gameClient.sentAttempt(storedAttempt);
-        log.info("Gamification service response: {}", status);
+        challengeEventPub.challengeSolved(storedAttempt);
         return storedAttempt;
     }
 
