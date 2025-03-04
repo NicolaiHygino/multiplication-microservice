@@ -11,7 +11,7 @@ public class ChallengeEventPub {
 
     public ChallengeEventPub(
             final AmqpTemplate amqpTemplate,
-            @Value("amqp.exchange.attempts") final String getChallengesTopicExchange) {
+            @Value("${amqp.exchange.attempts}") final String getChallengesTopicExchange) {
         this.amqpTemplate = amqpTemplate;
         this.challengesTopicExchange = getChallengesTopicExchange;
     }
