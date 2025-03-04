@@ -2,6 +2,7 @@ package com.example.multiplication.challenge;
 
 import com.example.multiplication.user.User;
 import com.example.multiplication.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeAttemptRepository attemptRepository;
     private final ChallengeEventPub challengeEventPub;
 
+    @Transactional
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
         // Check if the user already exists for that alias, otherwise create it
